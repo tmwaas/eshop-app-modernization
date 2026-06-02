@@ -1,16 +1,11 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
-COPY ["app/eShopLinuxApp.csproj", "app/"]
-RUN dotnet restore "app/eShopLinuxApp.csproj"
-COPY . .
-WORKDIR "/src/app"
-RUN dotnet build "eShopLinuxApp.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "eShopLinuxApp.csproj" -c Release -o /app/publish /p:UseAppHost=false
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY . .
+WORKDIR /app/app
+RUN dotnet restore
+RUN dotnet publish -c Release -o out /p:UseAppHost=false
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build-env /app/app/out .
 EXPOSE 8080
 ENTRYPOINT ["dotnet", "eShopLinuxApp.dll"]
