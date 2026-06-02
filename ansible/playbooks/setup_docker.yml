@@ -1,0 +1,7 @@
+---
+- name: Setup Docker Environment
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install deps
+      apt: { name: [apt-transport-https, ca-certificates, curl, software-properties-common], state: present, update_cache: yes }
