@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: 518890435133.dkr.ecr.us-east-1.amazonaws.com/eshop-linux-app:latest
+        image: 088862082874.dkr.ecr.us-east-1.amazonaws.com/eshop-linux-app:latest
         ports: [{ containerPort: 8080 }]
         resources:
           limits: { cpu: "500m", memory: "512Mi" }
